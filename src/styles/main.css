@@ -103,6 +103,10 @@ label {
   font-size: 3em;
 }
 
+.app-header__menu:hover {
+  cursor: pointer;
+}
+
 .app-footer {
   margin-top: auto;
   text-align: center;
