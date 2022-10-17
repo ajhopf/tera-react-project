@@ -1,11 +1,16 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../images/logo.svg'
+import AppLoading from '../organisms/AppLoading'
 
 export default function Home() {
   const navigate = useNavigate()
+
+  //estados
   const [users, setUsers] = React.useState([])
   const [currentUser, setCurrentUser] = React.useState('')
+  //estado de isLoading começa como carregando -> irá modificar no useEffect que 'roda' quando tudo foi carregado
+  const [isLoading, setIsLoading] = React.useState(true)
 
   console.log(users)
   console.log('currentUser', currentUser)
@@ -13,10 +18,13 @@ export default function Home() {
   //o segundo parametro do useEffect é necessário para que ele realize a função apenas uma vez, se não irá ficar repetindo
   React.useEffect(()=> {
     const usersEndpoint = 'https://62c4e487abea8c085a7e022a.mockapi.io/users/'
-
+    
     fetch(usersEndpoint)
     .then(response => response.json())
-    .then(data => setUsers(data))
+    .then(data => {
+      setUsers(data);
+      setIsLoading(false)
+    })
   }, [])
 
   const handleUserChange = e => {
@@ -28,7 +36,7 @@ export default function Home() {
   }
 
   //render
-  return (
+  return isLoading ? <AppLoading /> : (
   <div className="home center">
     <div className="home__logo">
       <img src={logo} className="responsive" alt="" />
